@@ -8,7 +8,7 @@ module.exports = class PriceEmitter extends EventEmitter {
 
     // 发布消息
     publish(message) {
-        console.log(`发布消息:`, message);
+        // console.log(`发布消息:`, message);
         // 触发事件，所有订阅该事件的订阅者将会收到消息
         this.emit('message', message);
     }
