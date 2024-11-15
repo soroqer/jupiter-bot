@@ -57,7 +57,10 @@
 
 
     // WebSocket 连接
-    const ws = new WebSocket('ws://54.65.224.180:9665');
+    const url = window.location.hostname === 'localhost'
+        ? 'ws://localhost:9665' // 本地调试
+        : 'ws://54.65.224.180:9665';
+    const ws = new WebSocket(url);
 
     ws.onmessage = (event) => {
         console.log(event)
