@@ -37,7 +37,7 @@ wss.on('connection', (ws) => {
 });
 
 // 监听端口
-const PORT = 3000;
+const PORT = 9665;
 server.listen(PORT, () => {
     console.log(`服务器已启动在 http://localhost:${PORT}`);
 });
