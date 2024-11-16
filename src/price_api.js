@@ -1,17 +1,12 @@
-
-const fetch = require('node-fetch');
-const { RestClientV5 } = require('bybit-api');
+import fetch from 'node-fetch';
+import { RestClientV5 } from 'bybit-api';
 const client = new RestClientV5();
 
-module.exports = {
-    priceOfByBit,
-    priceOfDex
-}
 
 
 
 /**/
-async function priceOfDex(){
+export async function priceOfDex(){
 
     try {
         const url = 'https://api.jup.ag/price/v2?ids=Grass7B4RdKfBCjTKgSqnXkqjwiGvQyFbuSCUJr3XXjs&showExtraInfo=true';
@@ -67,7 +62,7 @@ async function priceOfDex(){
     "retExtInfo": {},
     "time": 1672376496682
 }*/
-async function priceOfByBit() {
+export async function priceOfByBit() {
 
     return client
         .getTickers({

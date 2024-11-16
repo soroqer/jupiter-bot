@@ -1,11 +1,11 @@
 // server.js
-const express = require('express');
-const WebSocket = require('ws');
-const http = require('http');
+import express from 'express';
+import {WebSocketServer} from 'ws';
+import { createServer } from 'http';
 const app = express();
-const server = http.createServer(app);
-const wss = new WebSocket.Server({ server });
-const PriceEmitter = require("./src/price_emitter");
+const server = createServer(app);
+const wss = new WebSocketServer({ server });
+import {PriceEmitter} from "./src/price_emitter.js";
 
 app.use(express.static('public')); // 将静态文件目录设为 'public'
 

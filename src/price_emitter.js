@@ -1,7 +1,8 @@
-const EventEmitter = require('events');
-const {priceOfDex, priceOfByBit} = require("./price_api");
+import EventEmitter from 'events';
+import './price_api.js'
+import {priceOfDex,priceOfByBit} from "./price_api.js";
 
-module.exports = class PriceEmitter extends EventEmitter {
+export class PriceEmitter extends EventEmitter {
 
     dexData = []
     byBitData = []
