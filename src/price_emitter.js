@@ -44,7 +44,7 @@ module.exports = class PriceEmitter extends EventEmitter {
                 this.dexData.push(data);
                 this.publish(data)
 
-                if (this.dexData.length > 10) {
+                if (this.dexData.length > 30) {
                     this.dexData.shift()
                 }
             }
@@ -66,7 +66,7 @@ module.exports = class PriceEmitter extends EventEmitter {
             };
             this.byBitData.push(data);
             this.publish(data);
-            if (this.byBitData.length > 10) {
+            if (this.byBitData.length > 30) {
                 this.byBitData.shift();
             }
         }).catch(err => {

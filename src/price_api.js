@@ -1,7 +1,6 @@
 
 const fetch = require('node-fetch');
 const { RestClientV5 } = require('bybit-api');
-const {response} = require("express");
 const client = new RestClientV5();
 
 module.exports = {
