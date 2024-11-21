@@ -46,7 +46,9 @@ const scatterChart = new Chart(ctx, {
         }
     }
 });
-
+// 当前选中的 symbol
+const queryParams = new URLSearchParams(window.location.search);
+const currentSymbol = queryParams.get('symbol'); // 获取 "symbol" 参数
 
 // WebSocket 连接
 const url = window.location.hostname === 'localhost'
@@ -56,7 +58,7 @@ let ws = new WebSocket(url);
 ws.onopen = () => {
     console.log('WebSocket Connected');
     const message = {
-        symbol: 'GRASSUSDT'
+        symbol: currentSymbol
     };
     ws.send(JSON.stringify(message));
 };
@@ -64,13 +66,13 @@ ws.onmessage = (event) => {
     console.log(event)
     const msg = JSON.parse(event.data);
     scatterChart.data.datasets[0].data.push(msg[0]); // 添加新点
-    // if (scatterChart.data.datasets[0].data.length > 500) {
-    //     scatterChart.data.datasets[0].data.shift();
-    // }
+    if (scatterChart.data.datasets[0].data.length > 700) {
+        scatterChart.data.datasets[0].data.shift();
+    }
     scatterChart.data.datasets[1].data.push(msg[1]); // 添加新点
-    // if (scatterChart.data.datasets[1].data.length > 500) {
-    //     scatterChart.data.datasets[1].data.shift();
-    // }
+    if (scatterChart.data.datasets[1].data.length > 700) {
+        scatterChart.data.datasets[1].data.shift();
+    }
     scatterChart.update(); // 更新图表
 };
 
@@ -97,9 +99,7 @@ ws.onerror = (error) => {
 // 获取所有按钮
 const buttons = document.querySelectorAll('.toggle-button');
 
-// 当前选中的 symbol
-const queryParams = new URLSearchParams(window.location.search);
-const currentSymbol = queryParams.get('symbol'); // 获取 "symbol" 参数
+
 
 // 遍历每个按钮并添加点击事件监听器
 buttons.forEach((button) => {
