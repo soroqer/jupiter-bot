@@ -1,0 +1,43 @@
+/* 页面整体样式 */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    height: 100vh; /* 让内容适应整个视口高度 */
+    display: flex;
+    justify-content: center;
+    align-items: center; /* 垂直居中内容 */
+    background-color: #f4f4f4;
+}
+
+/* 按钮容器样式 */
+#nav-button {
+    display: flex;
+    flex-direction: column; /* 垂直排列按钮 */
+    align-items: center;
+    gap: 15px; /* 按钮之间的间距 */
+}
+
+/* 按钮样式 */
+.nav-button {
+    padding: 10px 20px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 200px; /* 统一宽度 */
+    text-align: center;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* 按钮激活状态 */
+.nav-button.active {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #0056b3;
+}
+
+/* 悬停效果 */
+.nav-button:hover {
+    background-color: #e0e0e0;
+}

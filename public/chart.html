@@ -1,0 +1,21 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Scatter Plot</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+    <link rel="stylesheet" href="./chart.css">
+</head>
+<body>
+<canvas id="scatterChart"></canvas>
+<div id="button-group">
+    <button class="toggle-button" data-url="./chart.html" data-symbol="GRASSUSDT">Grass Chart</button>
+    <button class="toggle-button" data-url="./chart.html" data-symbol="DRIFTUSDT">Drift Chart</button>
+    <button class="toggle-button" data-url="./chart.html" data-symbol="XXXUSDT">XXX Chart</button>
+</div>
+<script src="./chart.js"></script>
+</body>
+</html>

@@ -12,6 +12,7 @@
   "license": "MIT",
   "dependencies": {
     "bybit-api": "^3.10.25",
+    "config": "^3.3.12",
     "express": "^4.21.1",
     "https": "^1.0.0",
     "node-fetch": "^3.3.2",

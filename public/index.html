@@ -4,84 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebSocket Scatter Plot</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+    <link rel="stylesheet" href="./index.css">
 </head>
 <body>
-<h2>实时散点图</h2>
-<canvas id="scatterChart"></canvas>
-
-<script>
-    const ctx = document.getElementById('scatterChart').getContext('2d');
-
-    const scatterChart = new Chart(ctx, {
-        type: 'scatter', // 设置图表类型为散点图
-        data: {
-            datasets: [{
-                label: 'Jupiter',
-                data: [],
-                backgroundColor: 'rgba(75, 192, 192, 1)'
-            },{
-                label: 'ByBit',
-                data: [],
-                backgroundColor: 'rgba(175, 92, 72, 1)'
-            }]
-        },
-        options: {
-            scales: {
-                x: {
-                    type: 'time', // 设置 X 轴为时间轴
-                    time: {
-                        unit: 'second', // 显示单位
-                        tooltipFormat: 'HH:mm:ss', // tooltip 显示的日期格式
-                        displayFormats: {
-                            day: 'HH:mm:ss' // X 轴标签显示格式
-                        }
-                    },
-                    title: {
-                        display: true,
-                        text: 'Time'
-                    }
-                },
-                y: {
-                    title: {
-                        display: true,
-                        text: 'Price'
-                    }
-                }
-            }
-        }
-    });
-
-
-
-    // WebSocket 连接
-    const url = window.location.hostname === 'localhost'
-        ? 'ws://localhost:9665' // 本地调试
-        : 'ws://54.65.224.180:9665';
-    const ws = new WebSocket(url);
-
-    ws.onmessage = (event) => {
-        console.log(event)
-        const msg = JSON.parse(event.data);
-        if (msg.source === 1) {
-            scatterChart.data.datasets[0].data.push(msg.point); // 添加新点
-            if (scatterChart.data.datasets[0].data.length > 500) {
-                scatterChart.data.datasets[0].data.shift();
-            }
-        }else if (msg.source === 2) {
-            scatterChart.data.datasets[1].data.push(msg.point); // 添加新点
-            if (scatterChart.data.datasets[1].data.length > 500) {
-                scatterChart.data.datasets[1].data.shift();
-            }
-        }
-        scatterChart.update(); // 更新图表
-    };
-
-    ws.onclose = () => {
-        console.log('WebSocket 连接已关闭');
-    };
-</script>
+    <div id="nav-button">
+        <button class="nav-button" data-url="./chart.html" data-symbol="GRASSUSDT">Grass Chart</button>
+        <button class="nav-button" data-url="./chart.html" data-symbol="DRIFTUSDT">Drift Chart</button>
+        <button class="nav-button" data-url="./chart.html" data-symbol="XXXUSDT">XXX Chart</button>
+    </div>
+    <script src="./index.js"></script>
 </body>
 </html>

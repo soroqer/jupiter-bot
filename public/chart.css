@@ -1,0 +1,41 @@
+/* 调整按钮组样式以固定到底部 */
+#button-group {
+    position: fixed;
+    bottom: 0; /* 紧贴页面底部 */
+    left: 0;
+    width: 100%; /* 按钮组占据整个宽度 */
+    background-color: #f9f9f9; /* 底部背景色 */
+    padding: 10px 0;
+    display: flex;
+    justify-content: center; /* 按钮居中对齐 */
+    gap: 10px; /* 按钮之间的间距 */
+    border-top: 1px solid #ddd; /* 可选：顶部边框分隔 */
+    z-index: 1000; /* 确保按钮显示在最顶层 */
+}
+
+.toggle-button {
+    padding: 10px 20px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.toggle-button.active {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #0056b3;
+}
+
+/* 不可用状态 */
+.toggle-button:disabled {
+    background-color: #e0e0e0; /* 灰色背景 */
+    color: #a0a0a0; /* 浅灰文字 */
+    border-color: #d0d0d0; /* 浅灰边框 */
+    cursor: not-allowed; /* 鼠标样式改为不可点击 */
+}
+
+.toggle-button:hover {
+    background-color: #e0e0e0;
+}

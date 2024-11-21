@@ -7,6 +7,9 @@ const server = createServer(app);
 const wss = new WebSocketServer({ server });
 import {PriceEmitter} from "./src/price_emitter.js";
 
+app.get('/points', (req, res) => {
+    res.json({ status: 'WebSocket server running', time: new Date() });
+})
 app.use(express.static('public')); // 将静态文件目录设为 'public'
 
 // 创建消息中心实例
@@ -18,17 +21,15 @@ priceEmitter.start()
 wss.on('connection', (ws) => {
     console.log('客户端已连接');
 
-    for (let i = 0; i < priceEmitter.byBitData.length; i++) {
-        ws.send(JSON.stringify(priceEmitter.byBitData[i]));
-    }
-    for (let i = 0; i < priceEmitter.dexData.length; i++) {
-        ws.send(JSON.stringify(priceEmitter.dexData[i]));
-    }
-
     function subscriber(message) {
         ws.send(JSON.stringify(message));
     }
-    priceEmitter.on('message', subscriber)
+
+    ws.on('message', (message) => {
+        const data = JSON.parse(message);
+        console.log('订阅：', data.symbol);
+        priceEmitter.on(data.symbol, subscriber)
+    })
 
     ws.on('close', () => {
         console.log('客户端已断开连接');

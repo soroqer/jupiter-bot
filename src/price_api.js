@@ -1,20 +1,31 @@
 import fetch from 'node-fetch';
 import { RestClientV5 } from 'bybit-api';
+import {jupiterRpc, tokens} from '../config.js';
 const client = new RestClientV5();
 
 
-
+const addresses =  function(){
+    const ids = [];
+    tokens.forEach(token=>{
+        ids.push(token.address);
+    })
+    return ids.join();
+}()
+// const addresses = getAddresses()
 
 /**/
 export async function priceOfDex(){
 
     try {
-        const url = 'https://api.jup.ag/price/v2?ids=Grass7B4RdKfBCjTKgSqnXkqjwiGvQyFbuSCUJr3XXjs&showExtraInfo=true';
+        const url = jupiterRpc + '/price/v2?showExtraInfo=true&ids=' + addresses;
+        console.log(url)
         const response = await fetch(url);
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const obj = await response.json();
+
+
         return obj.data.Grass7B4RdKfBCjTKgSqnXkqjwiGvQyFbuSCUJr3XXjs;
 
     }catch (err) {
@@ -66,9 +77,6 @@ export async function priceOfByBit() {
 
     return client
         .getTickers({
-            symbol: 'GRASSUSDT',
             category: 'spot',
         })
-
-
 }
