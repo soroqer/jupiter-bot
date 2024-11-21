@@ -7,11 +7,11 @@ const scatterChart = new Chart(ctx, {
     type: 'scatter', // 设置图表类型为散点图
     data: {
         datasets: [{
-            label: 'Jupiter',
+            label: '正向',
             data: [],
             backgroundColor: 'rgba(75, 192, 192, 1)'
         },{
-            label: 'ByBit',
+            label: '反向',
             data: [],
             backgroundColor: 'rgba(175, 92, 72, 1)'
         }]
@@ -40,7 +40,7 @@ const scatterChart = new Chart(ctx, {
             y: {
                 title: {
                     display: true,
-                    text: 'Price'
+                    text: 'bps'
                 }
             }
         }

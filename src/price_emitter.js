@@ -69,11 +69,11 @@ export class PriceEmitter extends EventEmitter {
         }
 
         const now = Date.now();
-        let y1 = this.byBit[symbol].bid1Price - this.jupiter[symbol].sellPrice;
-        y1 = y1 / this.jupiter[symbol].sellPrice * 10000;
+        let y1 = this.byBit[symbol].bid1Price - this.jupiter[symbol].buyPrice;
+        y1 = y1 / this.jupiter[symbol].buyPrice * 10000;
 
-        let y2 = this.byBit[symbol].ask1Price - this.jupiter[symbol].buyPrice;
-        y2 = y2 / this.jupiter[symbol].buyPrice * 10000;
+        let y2 = this.jupiter[symbol].sellPrice - this.byBit[symbol].ask1Price;
+        y2 = y2 / this.byBit[symbol].ask1Price * 10000;
         const data = [{
             x:now,
             y:y1,
