@@ -22,7 +22,7 @@ const scatterChart = new Chart(ctx, {
                 type: 'time', // 设置 X 轴为时间轴
                 time: {
                     unit: 'minute', // 显示单位
-                    setpSize:1,
+                    stepSize:1,
                     tooltipFormat: 'HH:mm', // tooltip 显示的日期格式
                     displayFormats: {
                         minute: 'HH:mm:ss' // X 轴标签显示格式
@@ -30,7 +30,7 @@ const scatterChart = new Chart(ctx, {
                 },
                 title: {
                     display: true,
-                    text: 'Time'
+                    text: 'time'
                 },
                 ticks:{
                     autoSkip:true,
@@ -43,12 +43,40 @@ const scatterChart = new Chart(ctx, {
                     text: 'bps'
                 }
             }
+        },
+        plugins: {
+            zoom: {
+                pan: {
+                    enabled: true,
+                    mode: 'x', // 允许水平拖动
+                    onPanComplete: handlePanComplete // 平移完成时的回调
+                },
+                zoom: {
+                    wheel: {
+                        enabled: true // 启用鼠标滚轮缩放
+                    },
+                    drag: {
+                        enabled: true, // 启用拖动缩放
+                        modifierKey: 'shift' // 按住 Shift 键启用拖动缩放
+                    },
+                    pinch: {
+                        enabled: true // 启用多指缩放（触屏）
+                    },
+                    mode: 'x', // 仅在 X 轴方向缩放
+                }
+            }
         }
     }
 });
 // 当前选中的 symbol
 const queryParams = new URLSearchParams(window.location.search);
 const currentSymbol = queryParams.get('symbol'); // 获取 "symbol" 参数
+
+// 初始化按钮状态
+document.querySelector(`[data-symbol="${currentSymbol}"]`).classList.add('disabled');
+
+// 设置 title
+document.title = "散点图-" + currentSymbol;
 
 // WebSocket 连接
 const url = window.location.hostname === 'localhost'
@@ -125,5 +153,23 @@ buttons.forEach((button) => {
     });
 });
 
-// 初始化按钮状态
-document.querySelector(`[data-symbol="${currentSymbol}"]`).classList.add('disabled');
+
+
+function handlePanComplete({ chart }) {
+    const xScale = chart.scales.x;
+    const minTime = xScale.min; // 当前可视区域的最小时间
+
+    // 如果已到最左侧的边缘
+    if (xScale.min <= chart.data.datasets[0].data[0]?.x) {
+        console.log(' TMD划过来啦')
+        // loadMoreData(minTime).then(newData => {
+        //     // 假设 `newData` 是从服务器加载的历史数据
+        //     chart.data.datasets.forEach((dataset, index) => {
+        //         dataset.data = [...newData[index], ...dataset.data];
+        //     });
+        //
+        //     // 更新图表
+        //     chart.update();
+        // });
+    }
+}
