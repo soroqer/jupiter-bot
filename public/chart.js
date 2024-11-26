@@ -13,7 +13,7 @@ const scatterChart = new Chart(ctx, {
         },{
             label: '反向',
             data: [],
-            backgroundColor: 'rgba(175, 92, 72, 1)'
+            backgroundColor: 'rgba(175, 152, 72, 1)'
         }]
     },
     options: {
@@ -125,20 +125,14 @@ ws.onerror = (error) => {
 
 
 // 获取所有按钮
-const buttons = document.querySelectorAll('.toggle-button');
+const buttons = document.querySelectorAll('.button-left, .button-right');
 
 
 
 // 遍历每个按钮并添加点击事件监听器
 buttons.forEach((button) => {
     const symbol = button.dataset.symbol; // 获取按钮的 data-symbol 值
-    if (symbol === currentSymbol) {
-        button.disabled = true; // 禁用匹配的按钮
-        button.classList.add('active'); // 可选：给禁用的按钮加高亮样式
-    } else {
-        button.disabled = false; // 确保其他按钮可用
-        button.classList.remove('active'); // 移除高亮样式
-    }
+    button.hidden = symbol === currentSymbol;
 
     // 绑定点击事件（仅对未禁用的按钮有效）
     button.addEventListener('click', () => {

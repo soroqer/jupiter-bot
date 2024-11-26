@@ -1,43 +1,78 @@
-/* 页面整体样式 */
 body {
-    margin: 0;
+    background-color: black;
+    color: white;
     font-family: Arial, sans-serif;
-    height: 100vh; /* 让内容适应整个视口高度 */
+    margin: 0;
+    padding: 0;
     display: flex;
-    justify-content: center;
-    align-items: center; /* 垂直居中内容 */
-    background-color: #f4f4f4;
+    height: 100vh;
 }
 
-/* 按钮容器样式 */
-#nav-button {
+.container {
     display: flex;
-    flex-direction: column; /* 垂直排列按钮 */
+    width: 100%;
+    position: relative;
+}
+
+.block {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 15px; /* 按钮之间的间距 */
+    justify-content: center;
+    padding: 20px;
 }
 
-/* 按钮样式 */
-.nav-button {
+.logo {
+    width: 150px;
+    margin-bottom: 20px;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.button-left {
+    width: 200px;
     padding: 10px 20px;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
+    background-color: black;
+    border: 2px solid #00E0FF;
     border-radius: 5px;
-    width: 200px; /* 统一宽度 */
-    text-align: center;
+    color: #00E0FF;
     cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s, color 0.3s;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-/* 按钮激活状态 */
-.nav-button.active {
-    background-color: #007bff;
-    color: #fff;
-    border-color: #0056b3;
+.button-left:hover {
+    background-color: #00E0FF;
+    color:white;
 }
 
-/* 悬停效果 */
-.nav-button:hover {
-    background-color: #e0e0e0;
+.button-right {
+    width: 200px;
+    padding: 10px 20px;
+    background-color: black;
+    border: 2px solid #F7A600;
+    border-radius: 5px;
+    color: #F7A600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.button-right:hover {
+    background-color: #F7A600;
+    color:white;
+}
+
+/* 分割线样式 */
+.divider {
+    position: absolute;
+    top: 20%; /* 设置分割线距离页面顶部20% */
+    bottom: 20%; /* 设置分割线距离页面底部20% */
+    left: 50%;
+    width: 1px; /* 设置分割线的宽度 */
+    background-color: saddlebrown; /* 设置分割线的颜色 */
+    transform: translateX(-50%); /* 水平居中 */
 }

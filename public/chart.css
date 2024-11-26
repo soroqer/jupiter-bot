@@ -4,7 +4,7 @@
     bottom: 0; /* 紧贴页面底部 */
     left: 0;
     width: 100%; /* 按钮组占据整个宽度 */
-    background-color: #f9f9f9; /* 底部背景色 */
+    background-color: black; /* 底部背景色 */
     padding: 10px 0;
     display: flex;
     justify-content: center; /* 按钮居中对齐 */
@@ -13,29 +13,47 @@
     z-index: 1000; /* 确保按钮显示在最顶层 */
 }
 
-.toggle-button {
+
+.button-left {
     padding: 10px 20px;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
+    background-color: black;
+    border: 2px solid #00E0FF;
     border-radius: 5px;
+    color: #00E0FF;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-.toggle-button.active {
-    background-color: #007bff;
-    color: #fff;
-    border-color: #0056b3;
+.button-left:hover {
+    background-color: #00E0FF;
+    color:white;
 }
 
-/* 不可用状态 */
-.toggle-button:disabled {
+.button-left:disabled {
     background-color: #e0e0e0; /* 灰色背景 */
     color: #a0a0a0; /* 浅灰文字 */
     border-color: #d0d0d0; /* 浅灰边框 */
     cursor: not-allowed; /* 鼠标样式改为不可点击 */
 }
 
-.toggle-button:hover {
-    background-color: #e0e0e0;
+.button-right {
+    padding: 10px 20px;
+    background-color: black;
+    border: 2px solid #F7A600;
+    border-radius: 5px;
+    color: #F7A600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.button-right:hover {
+    background-color: #F7A600;
+    color:white;
+}
+
+.button-right:disabled {
+    background-color: #e0e0e0; /* 灰色背景 */
+    color: #a0a0a0; /* 浅灰文字 */
+    border-color: #d0d0d0; /* 浅灰边框 */
+    cursor: not-allowed; /* 鼠标样式改为不可点击 */
 }
