@@ -1,8 +1,7 @@
 import EventEmitter from 'events';
-import './price_api.js'
 import fetch from "node-fetch";
 import { RestClientV5 } from 'bybit-api';
-import {bitGetRpc, jupiterRpc, tokens} from '../config.js';
+import {bitGetRpc, jupiterRpc, bitGetTokens, byBitTokens} from '../config.js';
 const client = new RestClientV5();
 export class PriceEmitter extends EventEmitter {
     jupiter = {};
@@ -12,9 +11,16 @@ export class PriceEmitter extends EventEmitter {
     constructor() {
         super();
         this.addresses = [];
-        tokens.forEach(token=>{
+        bitGetTokens.forEach(token=>{
             this.addresses.push(token.address);
         })
+        byBitTokens.forEach(token=>{
+            if (this.addresses.indexOf(token.address) === -1) {
+                this.addresses.push(token.address);
+            }
+        })
+
+        console.log('Jupiter监听',this.addresses)
     }
 
     async start() {
@@ -27,7 +33,9 @@ export class PriceEmitter extends EventEmitter {
 
     refreshJupiter() {
         this.priceOfJupiter().then(response => {
-            tokens.forEach(token=>{
+
+            console.log('refreshJupiter success');
+            bitGetTokens.forEach(token=>{
                 const quoted = response[token.address].extraInfo.quotedPrice
                 if (this.jupiter[token.name] === undefined
                     || this.jupiter[token.name].buyAt > quoted.buyAt
@@ -35,6 +43,15 @@ export class PriceEmitter extends EventEmitter {
 
                     this.jupiter[token.name] = quoted;
                     this.updateBitGetAndPublish(token.name)
+                }
+            })
+            byBitTokens.forEach(token=>{
+                const quoted = response[token.address].extraInfo.quotedPrice
+                if (this.jupiter[token.name] === undefined
+                    || this.jupiter[token.name].buyAt > quoted.buyAt
+                    || this.jupiter[token.name].sellAt > quoted.sellAt) {
+
+                    this.jupiter[token.name] = quoted;
                     this.updateByBitAndPublish(token.name)
                 }
             })
@@ -46,9 +63,10 @@ export class PriceEmitter extends EventEmitter {
 
     refreshByBit() {
         this.priceOfByBit().then(response => {
+            console.log('refreshByBit success');
             response.result.list.forEach(item=>{
                 const symbol = item.symbol.slice(0, -4)
-                tokens.forEach(token=>{
+                byBitTokens.forEach(token=>{
                     if (symbol === token.name) {
                         this.byBit[token.name] = item;
                         this.updateByBitAndPublish(token.name)
@@ -62,9 +80,10 @@ export class PriceEmitter extends EventEmitter {
 
     refreshBitGet() {
         this.priceOfBitGet().then(response => {
+            console.log('refreshBitGet success');
             response.result.list.forEach(item=>{
                 const symbol = item.symbol.slice(0, -4)
-                tokens.forEach(token=>{
+                bitGetTokens.forEach(token=>{
                     if (symbol === token.name) {
                         this.byBit[token.name] = item;
                         this.updateBitGetAndPublish(token.name)
@@ -96,6 +115,7 @@ export class PriceEmitter extends EventEmitter {
             x:now,
             y:y2,
         }];
+        console.log('ByBit-' + symbol, data)
         this.emit('ByBit-' + symbol, data)
     }
 
@@ -119,6 +139,7 @@ export class PriceEmitter extends EventEmitter {
             x:now,
             y:y2,
         }];
+        console.log('BitGet-' + symbol, data)
         this.emit('BitGet-' + symbol, data)
     }
 
