@@ -81,12 +81,10 @@ export class PriceEmitter extends EventEmitter {
     refreshBitGet() {
         this.priceOfBitGet().then(response => {
             // console.log('refreshBitGet success');
-            response.result.list.forEach(item=>{
+            response.forEach(item=>{
                 const symbol = item.symbol.slice(0, -4)
-                console.log('---',symbol)
                 bitGetTokens.forEach(token=>{
                     if (symbol === token.name) {
-                        console.log('--->>>>>>>>>>',symbol)
                         this.bitGet[token.name] = item;
                         this.updateBitGetAndPublish(token.name)
                     }
@@ -123,7 +121,7 @@ export class PriceEmitter extends EventEmitter {
     // 检查计算并发布消息
     updateBitGetAndPublish(symbol) {
 
-        console.log('bit get', symbol, this.jupiter[symbol], this.bitGet[symbol]);
+        // console.log('bit get', symbol, this.jupiter[symbol], this.bitGet[symbol]);
         if (this.jupiter[symbol] === undefined || this.bitGet[symbol] === undefined) {
             return;
         }
@@ -141,7 +139,7 @@ export class PriceEmitter extends EventEmitter {
             x:now,
             y:y2,
         }];
-        console.log('BitGet-' + symbol, data)
+        // console.log('BitGet-' + symbol, data)
         this.emit('BitGet-' + symbol, data)
     }
 
