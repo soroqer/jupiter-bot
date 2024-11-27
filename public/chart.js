@@ -22,7 +22,7 @@ const scatterChart = new Chart(ctx, {
                 type: 'time', // 设置 X 轴为时间轴
                 time: {
                     unit: 'minute', // 显示单位
-                    stepSize:1,
+                    stepSize:5,
                     tooltipFormat: 'HH:mm', // tooltip 显示的日期格式
                     displayFormats: {
                         minute: 'HH:mm:ss' // X 轴标签显示格式
@@ -34,7 +34,7 @@ const scatterChart = new Chart(ctx, {
                 },
                 ticks:{
                     autoSkip:true,
-                    maxTicksLimit:10
+                    maxTicksLimit:60
                 }
             },
             y: {
@@ -208,8 +208,10 @@ ws.onmessage = (event) => {
         cexTime:msg.cexTime,
         dexTime:msg.dexTime,
     }); // 添加新点
-    if (scatterChart.data.datasets[0].data.length > 700) {
+    if (scatterChart.data.datasets[0].data.length > 500) {
         scatterChart.data.datasets[0].data.shift();
+        scatterChart.options.scales.x.min = scatterChart.data.datasets[0].data[0].x; // 左移 X 轴最小值
+        scatterChart.options.scales.x.max = msg.x; // 保持滚动窗口宽度
     }
     scatterChart.data.datasets[1].data.push({
         x:msg.x,
@@ -219,7 +221,7 @@ ws.onmessage = (event) => {
         cexTime:msg.cexTime,
         dexTime:msg.dexTime,
     }); // 添加新点
-    if (scatterChart.data.datasets[1].data.length > 700) {
+    if (scatterChart.data.datasets[1].data.length > 500) {
         scatterChart.data.datasets[1].data.shift();
     }
     scatterChart.update(); // 更新图表
