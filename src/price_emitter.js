@@ -16,6 +16,7 @@ export class PriceEmitter extends EventEmitter {
     constructor() {
         super();
         this.addresses = [];
+        this.setMaxListeners(20);
         bitGetTokens.forEach(token=>{
             this.addresses.push(token.address);
         })
