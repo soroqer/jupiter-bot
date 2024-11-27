@@ -47,11 +47,11 @@ export async function insertByBitPoint(point) {
 export function queryPoints(source, symbol,timeBefore, callback) {
     let str;
     if (source === 'BitGet') {
-        str = 'SELECT * FROM scatter_bitget WHERE x < ? AND symbol = ? LIMIT 500';
+        str = 'SELECT * FROM scatter_bitget WHERE x < ? AND symbol = ? ORDER BY id DESC LIMIT 500';
     }else{
-        str = 'SELECT * FROM scatter_bybit WHERE x < ? AND symbol = ? LIMIT 500';
+        str = 'SELECT * FROM scatter_bybit WHERE x < ? AND symbol = ? ORDER BY id DESC LIMIT 500';
     }
     connection.query(str,[timeBefore, symbol], (err, result) => {
-        callback(err, result);
+        callback(err, result.reverse());
     })
 }
