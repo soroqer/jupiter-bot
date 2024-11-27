@@ -6,7 +6,10 @@ const app = express();
 const server = createServer(app);
 const wss = new WebSocketServer({ server });
 import {PriceEmitter} from "./src/price_emitter.js";
+import {connect} from "./src/sql.js";
 
+
+connect()
 app.get('/points', (req, res) => {
     res.json({ status: 'WebSocket server running', time: new Date() });
 })

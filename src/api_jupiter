@@ -1,0 +1,84 @@
+# Unit price of 1 JUP & 1 SOL based on the Derived Price in USDC
+https://api.jup.ag/price/v2?ids=JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN,So11111111111111111111111111111111111111112&showExtraInfo=true
+
+{
+    "data": {
+        "So11111111111111111111111111111111111111112": {
+            "id": "So11111111111111111111111111111111111111112",
+            "type": "derivedPrice",
+            "price": "132.176540000",
+            "extraInfo": {
+                "lastSwappedPrice": {
+                    "lastJupiterSellAt": 1726232167,
+                    "lastJupiterSellPrice": "132.1815918927837",
+                    "lastJupiterBuyAt": 1726232168,
+                    "lastJupiterBuyPrice": "132.3113422757551"
+                },
+                "quotedPrice": {
+                    "buyPrice": "132.183970000",
+                    "buyAt": 1726232166,
+                    "sellPrice": "132.169110000",
+                    "sellAt": 1726232168
+                },
+                "confidenceLevel": "high",
+                "depth": {
+                    "buyPriceImpactRatio": {
+                        "depth": {
+                            "10": 0.011976036126034885,
+                            "100": 0.05308426581530216,
+                            "1000": 0.1168049189323158
+                        },
+                        "timestamp": 1726232167
+                    },
+                    "sellPriceImpactRatio": {
+                        "depth": {
+                            "10": 0.01582101846363979,
+                            "100": 0.03166775883921609,
+                            "1000": 0.06880960201997424
+                        },
+                        "timestamp": 1726232167
+                    }
+                }
+            }
+        },
+        "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN": {
+            "id": "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN",
+            "type": "derivedPrice",
+            "price": "0.742851",
+            "extraInfo": {
+                "lastSwappedPrice": {
+                    "lastJupiterSellAt": 1726232039,
+                    "lastJupiterSellPrice": "0.7442999683998961",
+                    "lastJupiterBuyAt": 1726232097,
+                    "lastJupiterBuyPrice": "0.7431593824200015"
+                },
+                "quotedPrice": {
+                    "buyPrice": "0.742917",
+                    "buyAt": 1726232165,
+                    "sellPrice": "0.742784",
+                    "sellAt": 1726232168
+                },
+                "confidenceLevel": "high",
+                "depth": {
+                    "buyPriceImpactRatio": {
+                        "depth": {
+                            "10": 0.009393981894911491,
+                            "100": 0.08127843280940066,
+                            "1000": 0.3417234655853332
+                        },
+                        "timestamp": 1726232167
+                    },
+                    "sellPriceImpactRatio": {
+                        "depth": {
+                            "10": 0.05174412761856207,
+                            "100": 0.06288330728860267,
+                            "1000": 0.281508676845538
+                        },
+                        "timestamp": 1726232167
+                    }
+                }
+            }
+        }
+    },
+    "timeTaken": 0.00388851
+}

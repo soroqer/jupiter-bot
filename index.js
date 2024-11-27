@@ -11,7 +11,7 @@
 //     });
 
 
-import {connect,insertPoint,insertPrice,queryPoints} from './src/sql.js'
+import {connect} from './src/sql.js'
 
 connect()
 const timestamp_ms = 1669465200000; // 示例毫秒时间戳
@@ -21,11 +21,20 @@ const date = new Date(timestamp_ms);
 
 // 格式化为 SQL 可接受的时间字符串 (YYYY-MM-DD HH:mm:ss)
 const formattedDate = date.toISOString().slice(0, 19).replace('T', ' ');
-
-insertPrice({
-    buy:1,
-    sell:2,
-    time:formattedDate,
-    source:1
-})
-
+console.log(formattedDate);
+//
+// insertPrice({
+//     buy:1,
+//     sell:2,
+//     time:formattedDate,
+//     source:1
+// })
+//
+// insertPoint({
+//
+//     x:1231231231,
+//     y:222,
+//     symbol: "symbol",
+// },1).then(
+//     console.log('---')
+// )

@@ -45,25 +45,30 @@ const scatterChart = new Chart(ctx, {
             }
         },
         plugins: {
+            tooltip: {
+                callbacks: {
+                    label: handleLabel
+                }
+            },
             zoom: {
                 pan: {
                     enabled: true,
                     mode: 'x', // 允许水平拖动
                     onPanComplete: handlePanComplete // 平移完成时的回调
                 },
-                zoom: {
-                    wheel: {
-                        enabled: true // 启用鼠标滚轮缩放
-                    },
-                    drag: {
-                        enabled: true, // 启用拖动缩放
-                        modifierKey: 'shift' // 按住 Shift 键启用拖动缩放
-                    },
-                    pinch: {
-                        enabled: true // 启用多指缩放（触屏）
-                    },
-                    mode: 'x', // 仅在 X 轴方向缩放
-                }
+                // zoom: {
+                //     wheel: {
+                //         enabled: true // 启用鼠标滚轮缩放
+                //     },
+                //     drag: {
+                //         enabled: true, // 启用拖动缩放
+                //         modifierKey: 'shift' // 按住 Shift 键启用拖动缩放
+                //     },
+                //     pinch: {
+                //         enabled: true // 启用多指缩放（触屏）
+                //     },
+                //     mode: 'x', // 仅在 X 轴方向缩放
+                // }
             }
         }
     }
@@ -93,11 +98,25 @@ ws.onopen = () => {
 ws.onmessage = (event) => {
     console.log(event)
     const msg = JSON.parse(event.data);
-    scatterChart.data.datasets[0].data.push(msg[0]); // 添加新点
+    scatterChart.data.datasets[0].data.push({
+        x:msg.x,
+        y:msg.y1,
+        cexBuy:msg.cexBuy,
+        dexBuy:msg.dexBuy,
+        cexTime:msg.cexTime,
+        dexTime:msg.dexTime,
+    }); // 添加新点
     if (scatterChart.data.datasets[0].data.length > 700) {
         scatterChart.data.datasets[0].data.shift();
     }
-    scatterChart.data.datasets[1].data.push(msg[1]); // 添加新点
+    scatterChart.data.datasets[1].data.push({
+        x:msg.x,
+        y:msg.y2,
+        cexSell:msg.cexSell,
+        dexSell:msg.dexSell,
+        cexTime:msg.cexTime,
+        dexTime:msg.dexTime,
+    }); // 添加新点
     if (scatterChart.data.datasets[1].data.length > 700) {
         scatterChart.data.datasets[1].data.shift();
     }
@@ -147,7 +166,24 @@ buttons.forEach((button) => {
     });
 });
 
+function handleLabel(context) {
 
+    console.log('sssss',context);
+    let label = context.dataset.label || '';
+    label += context.formattedValue
+
+    // 创建一个 Date 对象
+    const cexDate = new Date(context.raw.cexTime);
+    const dexDate = new Date(context.raw.dexTime);
+    if (context.datasetIndex === 0) {
+        label += 'CexBuy:(' + context.raw.cexBuy + ',' + cexDate.getHours() + ':' + cexDate.getMinutes() + ':' + cexDate.getSeconds() + ')';
+        label += 'DexBuy:(' + context.raw.dexBuy + ',' + dexDate.getHours() + ':' + dexDate.getMinutes() + ':' + dexDate.getSeconds() + ')';
+    }else{
+        label += 'CexSell:(' + context.raw.cexSell + ',' + cexDate.getHours() + ':' + cexDate.getMinutes() + ':' + cexDate.getSeconds() + ')';
+        label += 'DexSell:(' + context.raw.dexSell + ',' + dexDate.getHours() + ':' + dexDate.getMinutes() + ':' + dexDate.getSeconds() + ')';
+    }
+    return label;
+}
 
 function handlePanComplete({ chart }) {
     const xScale = chart.scales.x;
