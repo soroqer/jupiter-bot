@@ -18,7 +18,7 @@ export async function insertPrice(price) {
         }
     })
 }
-export async function insertBitGetPoint(point, source) {
+export async function insertBitGetPoint(point) {
 
     let str = 'INSERT into scatter_bitget SET ?';
     connection.query(str, point, (err, result) => {
@@ -31,7 +31,7 @@ export async function insertBitGetPoint(point, source) {
         // }
     })
 }
-export async function insertByBitPoint(point, source) {
+export async function insertByBitPoint(point) {
 
     let str = 'INSERT into scatter_bybit SET ?';
     connection.query(str, point, (err, result) => {
@@ -44,18 +44,14 @@ export async function insertByBitPoint(point, source) {
         // }
     })
 }
-export  function queryPoints(source, symbol,timeBefore) {
+export function queryPoints(source, symbol,timeBefore, callback) {
     let str;
     if (source === 'BitGet') {
-        str = 'SELECT x,y1,y2 FROM scatter_bitget WHERE x < ? AND symbol = ? LIMIT 500';
+        str = 'SELECT * FROM scatter_bitget WHERE x < ? AND symbol = ? LIMIT 500';
     }else{
-        str = 'SELECT x,y1,y2 FROM scatter_bybit WHERE x < ? AND symbol = ? LIMIT 500';
+        str = 'SELECT * FROM scatter_bybit WHERE x < ? AND symbol = ? LIMIT 500';
     }
     connection.query(str,[timeBefore, symbol], (err, result) => {
-        if (err) {
-            console.log('query points',err);
-        }else{
-            return result;
-        }
+        callback(err, result);
     })
 }

@@ -1,7 +1,7 @@
 import EventEmitter from 'events';
 import fetch from "node-fetch";
 import {RestClientV5} from 'bybit-api';
-import {insertByBitPoint} from "./sql.js";
+import {insertByBitPoint,insertBitGetPoint} from "./sql.js";
 import {bitGetRpc, bitGetTokens, byBitTokens, jupiterRpc} from '../config.js';
 
 const client = new RestClientV5();
@@ -68,7 +68,6 @@ export class PriceEmitter extends EventEmitter {
 
     refreshByBit() {
         this.priceOfByBit().then(response => {
-            // console.log('refreshByBit success', response.time);
 
             response.result.list.forEach(item=>{
                 const symbol = item.symbol.slice(0, -4)
@@ -134,9 +133,10 @@ export class PriceEmitter extends EventEmitter {
             dexSell:this.jupiter[symbol].sellPr,
             dexTime:this.jupiter[symbol].time * 1000,
         }
-        // console.log('ByBit-' + symbol, data)
+
         // insertByBitPoint(point)
         this.emit('ByBit-' + symbol, data)
+        insertByBitPoint(data)
     }
 
     // 检查计算并发布消息
@@ -167,6 +167,7 @@ export class PriceEmitter extends EventEmitter {
         }
         // console.log('BitGet-' + symbol, data)
         this.emit('BitGet-' + symbol, data)
+        insertBitGetPoint(data)
     }
 
     // 查询最新价格

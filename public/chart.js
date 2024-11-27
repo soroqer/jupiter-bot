@@ -80,10 +80,112 @@ const currentSymbol = queryParams.get('symbol'); // 获取 "symbol" 参数
 // 初始化按钮状态
 document.querySelector(`[data-symbol="${currentSymbol}"]`).classList.add('disabled');
 
+fetchData()
+
+async function fetchData() {
+    try {
+        const url = window.location.hostname === 'localhost'
+            ? 'http://localhost:9665' // 本地调试
+            : 'http://54.65.224.180:9665';
+        const [cex, symbol] = currentSymbol.split('-');
+        // 示例请求 URL，请根据实际情况调整
+        const response = await fetch(`${url}/points?cex=${cex}&symbol=${symbol}`);
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+
+        const obj = await response.json();
+        obj.data.forEach((msg) => {
+            scatterChart.data.datasets[0].data.push({
+                x:msg.x,
+                y:msg.y1,
+                cexBuy:msg.cexBuy,
+                dexBuy:msg.dexBuy,
+                cexTime:msg.cexTime,
+                dexTime:msg.dexTime,
+            });
+            scatterChart.data.datasets[1].data.push({
+                x:msg.x,
+                y:msg.y2,
+                cexSell:msg.cexSell,
+                dexSell:msg.dexSell,
+                cexTime:msg.cexTime,
+                dexTime:msg.dexTime,
+            });
+        })
+        scatterChart.update(); // 更新图表
+
+    } catch (error) {
+        console.error('Fetch error:', error);
+    }
+}
+
 // 设置 title
 document.title = "散点图-" + currentSymbol;
 
-// WebSocket 连接
+
+
+// 获取所有按钮
+const buttons = document.querySelectorAll('.button-left, .button-right');
+
+
+
+// 遍历每个按钮并添加点击事件监听器
+buttons.forEach((button) => {
+    const symbol = button.dataset.symbol; // 获取按钮的 data-symbol 值
+    button.hidden = symbol === currentSymbol;
+
+    // 绑定点击事件（仅对未禁用的按钮有效）
+    button.addEventListener('click', () => {
+        if (!button.disabled) {
+            const targetUrl = button.dataset.url;
+            const targetSymbol = button.dataset.symbol;
+            if (targetUrl) {
+                // 跳转页面并传递符号参数
+                window.open(`${targetUrl}?symbol=${targetSymbol}`, '_blank');
+            }
+        }
+    });
+});
+
+function handleLabel(context) {
+
+    let label = context.dataset.label || '';
+    label += context.formattedValue
+
+    // 创建一个 Date 对象
+    const cexDate = new Date(context.raw.cexTime);
+    const dexDate = new Date(context.raw.dexTime);
+    if (context.datasetIndex === 0) {
+        label += 'CexBuy:(' + context.raw.cexBuy + ',' + cexDate.getHours() + ':' + cexDate.getMinutes() + ':' + cexDate.getSeconds() + ')';
+        label += 'DexBuy:(' + context.raw.dexBuy + ',' + dexDate.getHours() + ':' + dexDate.getMinutes() + ':' + dexDate.getSeconds() + ')';
+    }else{
+        label += 'CexSell:(' + context.raw.cexSell + ',' + cexDate.getHours() + ':' + cexDate.getMinutes() + ':' + cexDate.getSeconds() + ')';
+        label += 'DexSell:(' + context.raw.dexSell + ',' + dexDate.getHours() + ':' + dexDate.getMinutes() + ':' + dexDate.getSeconds() + ')';
+    }
+    return label;
+}
+
+function handlePanComplete({ chart }) {
+    const xScale = chart.scales.x;
+    const minTime = xScale.min; // 当前可视区域的最小时间
+
+    // 如果已到最左侧的边缘
+    if (xScale.min <= chart.data.datasets[0].data[0]?.x) {
+        console.log(' TMD划过来啦')
+        // loadMoreData(minTime).then(newData => {
+        //     // 假设 `newData` 是从服务器加载的历史数据
+        //     chart.data.datasets.forEach((dataset, index) => {
+        //         dataset.data = [...newData[index], ...dataset.data];
+        //     });
+        //
+        //     // 更新图表
+        //     chart.update();
+        // });
+    }
+}
+
 const url = window.location.hostname === 'localhost'
     ? 'ws://localhost:9665' // 本地调试
     : 'ws://54.65.224.180:9665';
@@ -140,66 +242,3 @@ ws.onclose = () => {
 ws.onerror = (error) => {
     console.error('WebSocket Error:', error);
 };
-
-
-
-// 获取所有按钮
-const buttons = document.querySelectorAll('.button-left, .button-right');
-
-
-
-// 遍历每个按钮并添加点击事件监听器
-buttons.forEach((button) => {
-    const symbol = button.dataset.symbol; // 获取按钮的 data-symbol 值
-    button.hidden = symbol === currentSymbol;
-
-    // 绑定点击事件（仅对未禁用的按钮有效）
-    button.addEventListener('click', () => {
-        if (!button.disabled) {
-            const targetUrl = button.dataset.url;
-            const targetSymbol = button.dataset.symbol;
-            if (targetUrl) {
-                // 跳转页面并传递符号参数
-                window.open(`${targetUrl}?symbol=${targetSymbol}`, '_blank');
-            }
-        }
-    });
-});
-
-function handleLabel(context) {
-
-    console.log('sssss',context);
-    let label = context.dataset.label || '';
-    label += context.formattedValue
-
-    // 创建一个 Date 对象
-    const cexDate = new Date(context.raw.cexTime);
-    const dexDate = new Date(context.raw.dexTime);
-    if (context.datasetIndex === 0) {
-        label += 'CexBuy:(' + context.raw.cexBuy + ',' + cexDate.getHours() + ':' + cexDate.getMinutes() + ':' + cexDate.getSeconds() + ')';
-        label += 'DexBuy:(' + context.raw.dexBuy + ',' + dexDate.getHours() + ':' + dexDate.getMinutes() + ':' + dexDate.getSeconds() + ')';
-    }else{
-        label += 'CexSell:(' + context.raw.cexSell + ',' + cexDate.getHours() + ':' + cexDate.getMinutes() + ':' + cexDate.getSeconds() + ')';
-        label += 'DexSell:(' + context.raw.dexSell + ',' + dexDate.getHours() + ':' + dexDate.getMinutes() + ':' + dexDate.getSeconds() + ')';
-    }
-    return label;
-}
-
-function handlePanComplete({ chart }) {
-    const xScale = chart.scales.x;
-    const minTime = xScale.min; // 当前可视区域的最小时间
-
-    // 如果已到最左侧的边缘
-    if (xScale.min <= chart.data.datasets[0].data[0]?.x) {
-        console.log(' TMD划过来啦')
-        // loadMoreData(minTime).then(newData => {
-        //     // 假设 `newData` 是从服务器加载的历史数据
-        //     chart.data.datasets.forEach((dataset, index) => {
-        //         dataset.data = [...newData[index], ...dataset.data];
-        //     });
-        //
-        //     // 更新图表
-        //     chart.update();
-        // });
-    }
-}

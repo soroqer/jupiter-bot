@@ -6,12 +6,21 @@ const app = express();
 const server = createServer(app);
 const wss = new WebSocketServer({ server });
 import {PriceEmitter} from "./src/price_emitter.js";
-import {connect} from "./src/sql.js";
+import {connect, queryPoints} from "./src/sql.js";
 
 
 connect()
 app.get('/points', (req, res) => {
-    res.json({ status: 'WebSocket server running', time: new Date() });
+    const symbol = req.query.symbol;
+    const cex = req.query.cex;
+    queryPoints(cex,symbol,Date.now(), function(err, result) {
+        if (err) {
+            res.json({ code: 1, msg: err });
+        }else{
+            res.json({code: 0, data: result});
+        }
+    })
+    // res.json({ status: 'WebSocket server running', time: new Date() });
 })
 app.use(express.static('public')); // 将静态文件目录设为 'public'
 
