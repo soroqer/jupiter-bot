@@ -43,29 +43,20 @@ export class PriceEmitter extends EventEmitter {
             bitGetTokens.forEach(token=>{
                 const quoted = response[token.address].extraInfo.quotedPrice
                 const newTime = Math.max(quoted.buyAt, quoted.sellAt)
-                if (this.jupiter[token.name] === undefined
-                    || this.jupiter[token.name].time < newTime) {
-
-                    this.jupiter[token.name] = {
-                        buyPr:quoted.buyPrice,
-                        sellPr:quoted.sellPrice,
-                        time:newTime,
-                    };
-
-                    // this.updateBitGetAndPublish(token.name)
-                }
+                this.jupiter[token.name] = {
+                    buyPr:quoted.buyPrice,
+                    sellPr:quoted.sellPrice,
+                    time:newTime,
+                };
             })
             byBitTokens.forEach(token=>{
                 const quoted = response[token.address].extraInfo.quotedPrice
                 const newTime = Math.max(quoted.buyAt, quoted.sellAt)
-                if (this.jupiter[token.name] === undefined
-                    || this.jupiter[token.name].time < newTime) {
 
-                    this.jupiter[token.name] = {
-                        buyPr:quoted.buyPrice,
-                        sellPr:quoted.sellPrice,
-                        time:newTime,
-                    };
+                this.jupiter[token.name] = {
+                    buyPr:quoted.buyPrice,
+                    sellPr:quoted.sellPrice,
+                    time:newTime,
                     // this.updateByBitAndPublish(token.name)
                 }
             })

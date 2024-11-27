@@ -10,18 +10,20 @@
 //         console.log('err',err)
 //     });
 
+// import {jupiterRpc} from "./config.js";
+// async function sd(){
+//     setInterval(() => {
+//         const url = jupiterRpc + '/price/v2?showExtraInfo=true&ids=Grass7B4RdKfBCjTKgSqnXkqjwiGvQyFbuSCUJr3XXjs';
+//         const response = await fetch(url);
+//         if (!response.ok) {
+//             console.log(response.status)
+//         }
+//         const obj = await response.json();
+//         return obj.data;
+//     }, 1000); //
+// }
 
-import {connect} from './src/sql.js'
 
-connect()
-const timestamp_ms = 1669465200000; // 示例毫秒时间戳
-
-// 创建一个 Date 对象
-const date = new Date(timestamp_ms);
-
-// 格式化为 SQL 可接受的时间字符串 (YYYY-MM-DD HH:mm:ss)
-const formattedDate = date.toISOString().slice(0, 19).replace('T', ' ');
-console.log(formattedDate);
 //
 // insertPrice({
 //     buy:1,
